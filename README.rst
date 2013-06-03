@@ -1,7 +1,8 @@
 Apple Keyboard Toggle Plugin for Cuttlefish
 ===========================================
 
-You'll need to install Cuttlefish
+You'll need to install Cuttlefish (https://launchpad.net/cuttlefish)
+
 #TODO: elaborate; it's only in the 12.04 repos
 
 Plugin Setup
