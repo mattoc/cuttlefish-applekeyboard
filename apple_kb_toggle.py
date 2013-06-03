@@ -33,7 +33,7 @@ from cuttlefish.params import StringParam
 
 OPT_PATH = os.path.expanduser(os.path.join('~', '.cuttlefish', 'apple_kb_options.txt'))
 
-def save_layout():
+def save_current_layout():
     command = 'gsettings get org.gnome.libgnomekbd.keyboard options' 
     opts = subprocess.check_output(shlex.split(command))
 
@@ -51,9 +51,13 @@ def get_layout():
                 return opts.rstrip()  # file can have newlines trailing
 
     # save it then run again
-    save_layout()
+    save_current_layout()
 
     return get_layout()
+
+
+def set_layout(layout):
+    subprocess.call(shlex.split('gsettings set org.gnome.libgnomekbd.keyboard options "%s"' % layout))
 
 
 class AppleKeyboardEnable(CuttleAction, CuttlePlugin):
@@ -83,7 +87,7 @@ class AppleKeyboardEnable(CuttleAction, CuttlePlugin):
         options.append('altwin\taltwin:swap_lalt_lwin')
 
         layout = "['%s']" % "','".join(options)
-        subprocess.call( shlex.split('gsettings set org.gnome.libgnomekbd.keyboard options "%s"' % layout))
+        set_layout(layout)
 
 
 class AppleKeyboardDisable(CuttleAction, CuttlePlugin):
@@ -96,5 +100,5 @@ class AppleKeyboardDisable(CuttleAction, CuttlePlugin):
         CuttlePlugin.__init__(self)
 
     def execute(self):
-        subprocess.call(shlex.split('gsettings set org.gnome.libgnomekbd.keyboard options "%s"' % get_layout()))
+        set_layout(get_layout())
 
